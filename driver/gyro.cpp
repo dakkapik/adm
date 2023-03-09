@@ -56,6 +56,14 @@ short read_raw_data(int addr){
 	return value;
 }
 
+short read_raw_data_magnet(int addr){
+	short high_byte,low_byte,value;
+	high_byte = wiringPiI2CReadReg8(fd, addr);
+	low_byte = wiringPiI2CReadReg8(fd, addr-1);
+	value = (high_byte << 8) | low_byte;
+	return value;
+}
+
 void ms_delay(int val){
 	int i,j;
 	for(i=0;i<=val;i++)
@@ -103,9 +111,9 @@ int main(){
 		Gyro_angle[1] = Gyr_rawY/131.0;
         	Gyro_angle[2] = Gyr_rawZ/131.0;
 
-		magnet_rawX = read_raw_data(AK8963_XOUT_H);
-		magnet_rawY = read_raw_data(AK8963_YOUT_H);
-		magnet_rawZ = read_raw_data(AK8963_ZOUT_H);
+		magnet_rawX = read_raw_data_magnet(AK8963_XOUT_H);
+		magnet_rawY = read_raw_data_magnet(AK8963_YOUT_H);
+		magnet_rawZ = read_raw_data_magnet(AK8963_ZOUT_H);
 		
 		/*---X---*/
 		magnet[0] = magnet_rawX/131.0;
