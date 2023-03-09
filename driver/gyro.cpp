@@ -37,6 +37,11 @@ milliseconds ms = duration_cast< milliseconds >(
 #define GYRO_YOUT_H  0x45
 #define GYRO_ZOUT_H  0x47
 
+#define AK8963_XOUT_H    0x04
+#define AK8963_YOUT_H    0x06
+#define AK8963_ZOUT_H    0x08
+#define AK8963_CNTL      0x0A	
+
 int fd;
 
 void MPU6050_Init(){
@@ -45,7 +50,8 @@ void MPU6050_Init(){
 	wiringPiI2CWriteReg8 (fd, PWR_MGMT_1, 0x01);	/* Write to power management register */
 	wiringPiI2CWriteReg8 (fd, CONFIG, 0);		/* Write to Configuration register */
 	wiringPiI2CWriteReg8 (fd, GYRO_CONFIG, 24);	/* Write to Gyro Configuration register */
-	wiringPiI2CWriteReg8 (fd, INT_ENABLE, 0x01);	/*Write to interrupt enable register */
+	wiringPiI2CWriteReg8 (fd, INT_ENABLE, 0x01);	/* Write to interrupt enable register */
+	wiringPiI2CWriteReg8 (fd, AK8963_CNTL, 0x06);	/* Write to magnetometer Control register */
 
 } 
 
@@ -100,10 +106,22 @@ void calcOffsets(bool console){
     Serial.print("========================================");
 		delay(delayAfter);
 	}
+short read_raw_data_magnet(int addr){
+	short high_byte,low_byte,value;
+	high_byte = wiringPiI2CReadReg8(fd, addr);
+	low_byte = wiringPiI2CReadReg8(fd, addr-1);
+	value = (high_byte << 8) | low_byte;
+	return value;
+}
+
+void ms_delay(int val){
+	int i,j;
+	for(i=0;i<=val;i++)
+		for(j=0;j<1200;j++);
 }
 
 int main(){
-	int16_t Acc_rawX, Acc_rawY, Acc_rawZ,Gyr_rawX, Gyr_rawY, Gyr_rawZ;
+	int16_t Acc_rawX, Acc_rawY, Acc_rawZ,Gyr_rawX, Gyr_rawY, Gyr_rawZ, magnet_rawX, magnet_rawY, magnet_rawZ;
 	float Acceleration_angle[3];
 	float Gyro_angle[3];
 	float Total_angle[3];
@@ -149,6 +167,16 @@ int main(){
 		Gyro_angle[1] -= gyroYoffset;
         Gyro_angle[2] -= gyroZoffset;
 
+		magnet_rawX = read_raw_data_magnet(AK8963_XOUT_H);
+		magnet_rawY = read_raw_data_magnet(AK8963_YOUT_H);
+		magnet_rawZ = read_raw_data_magnet(AK8963_ZOUT_H);
+		
+		/*---X---*/
+		magnet[0] = magnet_rawX/131.0;
+		/*---Y---*/
+		magnet[1] = magnet_rawY/131.0;
+        	magnet[2] = magnet_rawZ/131.0;
+		
 		/*---X axis angle---*/
 		Total_angle[0] = 0.98 *(Total_angle[0] + Gyro_angle[0]*elapsedTime) + 0.02*Acceleration_angle[0];
 		/*---Y axis angle---*/
