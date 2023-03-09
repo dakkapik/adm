@@ -15,7 +15,7 @@
 uint16_t delayBefore = 1000;
 uint16_t delayAfter = 3000;
 
-float gyroXoffset, gyroYoffset, gyroZoffset;
+// float gyroXoffset, gyroYoffset, gyroZoffset;
 
 using namespace std::chrono;
 
@@ -69,44 +69,44 @@ void setGyroOffsets (float x, float y, float z) {
   gyroZoffset = z;
 }
 
-void calcOffsets(bool console){
-	float x = 0, y = 0, z = 0;
-	int16_t rx, ry, rz;
+// void calcOffsets(bool console){
+// 	float x = 0, y = 0, z = 0;
+// 	int16_t rx, ry, rz;
 
-//   delay(delayBefore);
-	if(console){
-//     Serial.println();
-//     Serial.println("========================================");
-//     Serial.println("Calculating gyro offsets");
-//     Serial.print("DO NOT MOVE MPU6050");
-  }
-  for(int i = 0; i < 3000; i++){
-    if(console && i % 1000 == 0){
-    //   Serial.print(".");
-    }
-    rx = read_raw_data(GYRO_XOUT_H);
-    ry = read_raw_data(GYRO_YOUT_H);
-    rz = read_raw_data(GYRO_ZOUT_H);
+// //   delay(delayBefore);
+// 	if(console){
+// //     Serial.println();
+// //     Serial.println("========================================");
+// //     Serial.println("Calculating gyro offsets");
+// //     Serial.print("DO NOT MOVE MPU6050");
+//   }
+//   for(int i = 0; i < 3000; i++){
+//     if(console && i % 1000 == 0){
+//     //   Serial.print(".");
+//     }
+//     rx = read_raw_data(GYRO_XOUT_H);
+//     ry = read_raw_data(GYRO_YOUT_H);
+//     rz = read_raw_data(GYRO_ZOUT_H);
  
-    x += ((float)rx) / 65.5;
-    y += ((float)ry) / 65.5;
-    z += ((float)rz) / 65.5;
-  }
-  gyroXoffset = x / 3000;
-  gyroYoffset = y / 3000;
-  gyroZoffset = z / 3000;
+//     x += ((float)rx) / 65.5;
+//     y += ((float)ry) / 65.5;
+//     z += ((float)rz) / 65.5;
+//   }
+//   gyroXoffset = x / 3000;
+//   gyroYoffset = y / 3000;
+//   gyroZoffset = z / 3000;
 
-  if(console){
-    // Serial.println();
-    // Serial.println("Done!");
-    // Serial.print("X : ");Serial.println(gyroXoffset);
-    // Serial.print("Y : ");Serial.println(gyroYoffset);
-    // Serial.print("Z : ");Serial.println(gyroZoffset);
-    // Serial.println("Program will start after 3 seconds");
-    // Serial.print("========================================");
-	// delay(delayAfter);
-  }
-}
+//   if(console){
+//     // Serial.println();
+//     // Serial.println("Done!");
+//     // Serial.print("X : ");Serial.println(gyroXoffset);
+//     // Serial.print("Y : ");Serial.println(gyroYoffset);
+//     // Serial.print("Z : ");Serial.println(gyroZoffset);
+//     // Serial.println("Program will start after 3 seconds");
+//     // Serial.print("========================================");
+// 	// delay(delayAfter);
+//   }
+// }
 short read_raw_data_magnet(int addr){
 	short high_byte,low_byte,value;
 	high_byte = wiringPiI2CReadReg8(fd, addr);
@@ -122,6 +122,9 @@ void ms_delay(int val){
 }
 
 int main(){
+	float gyroXoffset=1.45;
+	float gyroYoffset=1.23;
+	float gyroZoffset=-1.32;
 	int16_t Acc_rawX, Acc_rawY, Acc_rawZ,Gyr_rawX, Gyr_rawY, Gyr_rawZ, magnet_rawX, magnet_rawY, magnet_rawZ;
 	float Acceleration_angle[3];
 	float Gyro_angle[3];
@@ -131,7 +134,7 @@ int main(){
 	int i;
 	float rad_to_deg = 180/3.141592654;
 	
-	setGyroOffsets(1.45, 1.23, -1.32);
+	// setGyroOffsets(1.45, 1.23, -1.32);
 
 	fd = wiringPiI2CSetup(Device_Address);   /*Initializes I2C with device Address*/
 	MPU6050_Init();		                 /* Initializes MPU6050 */
