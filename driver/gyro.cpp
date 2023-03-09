@@ -1,5 +1,5 @@
-#include <wiringPiI2C.h>
-#include <wiringPi.h>
+// #include <wiringPiI2C.h>
+// #include <wiringPi.h>
 
 #define _USE_MATH_DEFINES
  
@@ -73,16 +73,16 @@ void calcOffsets(bool console){
 	float x = 0, y = 0, z = 0;
 	int16_t rx, ry, rz;
 
-  delay(delayBefore);
-	if(console){
-    Serial.println();
-    Serial.println("========================================");
-    Serial.println("Calculating gyro offsets");
-    Serial.print("DO NOT MOVE MPU6050");
-  }
+//   delay(delayBefore);
+// 	if(console){
+//     Serial.println();
+//     Serial.println("========================================");
+//     Serial.println("Calculating gyro offsets");
+//     Serial.print("DO NOT MOVE MPU6050");
+//   }
   for(int i = 0; i < 3000; i++){
     if(console && i % 1000 == 0){
-      Serial.print(".");
+    //   Serial.print(".");
     }
     rx = read_raw_data(GYRO_XOUT_H);
     ry = read_raw_data(GYRO_YOUT_H);
@@ -96,15 +96,15 @@ void calcOffsets(bool console){
   gyroYoffset = y / 3000;
   gyroZoffset = z / 3000;
 
-  if(console){
-    Serial.println();
-    Serial.println("Done!");
-    Serial.print("X : ");Serial.println(gyroXoffset);
-    Serial.print("Y : ");Serial.println(gyroYoffset);
-    Serial.print("Z : ");Serial.println(gyroZoffset);
-    Serial.println("Program will start after 3 seconds");
-    Serial.print("========================================");
-		delay(delayAfter);
+//   if(console){
+//     Serial.println();
+//     Serial.println("Done!");
+//     Serial.print("X : ");Serial.println(gyroXoffset);
+//     Serial.print("Y : ");Serial.println(gyroYoffset);
+//     Serial.print("Z : ");Serial.println(gyroZoffset);
+//     Serial.println("Program will start after 3 seconds");
+//     Serial.print("========================================");
+// 		delay(delayAfter);
 	}
 short read_raw_data_magnet(int addr){
 	short high_byte,low_byte,value;
