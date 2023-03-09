@@ -32,6 +32,10 @@ milliseconds ms = duration_cast< milliseconds >(
 #define GYRO_YOUT_H  0x45
 #define GYRO_ZOUT_H  0x47
 
+#define AK8963_XOUT_H    0x04
+#define AK8963_YOUT_H    0x06
+#define AK8963_ZOUT_H    0x08
+
 int fd;
 
 void MPU6050_Init(){
@@ -99,7 +103,16 @@ int main(){
 		Gyro_angle[1] = Gyr_rawY/131.0;
         	Gyro_angle[2] = Gyr_rawZ/131.0;
 
-
+		magnet_rawX = read_raw_data(AK8963_XOUT_H);
+		magnet_rawY = read_raw_data(AK8963_YOUT_H);
+		magnet_rawZ = read_raw_data(AK8963_ZOUT_H);
+		
+		/*---X---*/
+		magnet[0] = magnet_rawX;
+		/*---Y---*/
+		magnet[1] = magnet_rawY;
+        	magnet[2] = magnet_rawZ;
+		
 		/*---X axis angle---*/
 		Total_angle[0] = 0.98 *(Total_angle[0] + Gyro_angle[0]*elapsedTime) + 0.02*Acceleration_angle[0];
 		/*---Y axis angle---*/
