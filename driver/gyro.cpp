@@ -187,7 +187,7 @@ int main(){
 		/*---Y axis angle---*/
 		Total_angle[1] = 0.98 *(Total_angle[1] + Gyro_angle[1]*elapsedTime) + 0.02*Acceleration_angle[1];
 
-		Total_angle[2] = Total_angle[2] + Gyro_angle[2]*elapsedTime;
+		Total_angle[2] = (Total_angle[2] + Gyro_angle[2]*elapsedTime);
 
 		printf("%f,%f,%f,%f,%f,%f\r", Total_angle[0], Total_angle[1], Total_angle[2], magnet[0], magnet[1], magnet[2]);
 
