@@ -108,10 +108,10 @@ int main(){
 		magnet_rawZ = read_raw_data(AK8963_ZOUT_H);
 		
 		/*---X---*/
-		magnet[0] = magnet_rawX;
+		magnet[0] = magnet_rawX/131.0;
 		/*---Y---*/
-		magnet[1] = magnet_rawY;
-        	magnet[2] = magnet_rawZ;
+		magnet[1] = magnet_rawY/131.0;
+        	magnet[2] = magnet_rawZ/131.0;
 		
 		/*---X axis angle---*/
 		Total_angle[0] = 0.98 *(Total_angle[0] + Gyro_angle[0]*elapsedTime) + 0.02*Acceleration_angle[0];
