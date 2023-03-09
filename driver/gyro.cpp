@@ -97,14 +97,14 @@ void calcOffsets(bool console){
   gyroZoffset = z / 3000;
 
   if(console){
-    Serial.println();
-    Serial.println("Done!");
-    Serial.print("X : ");Serial.println(gyroXoffset);
-    Serial.print("Y : ");Serial.println(gyroYoffset);
-    Serial.print("Z : ");Serial.println(gyroZoffset);
-    Serial.println("Program will start after 3 seconds");
-    Serial.print("========================================");
-	delay(delayAfter);
+    // Serial.println();
+    // Serial.println("Done!");
+    // Serial.print("X : ");Serial.println(gyroXoffset);
+    // Serial.print("Y : ");Serial.println(gyroYoffset);
+    // Serial.print("Z : ");Serial.println(gyroZoffset);
+    // Serial.println("Program will start after 3 seconds");
+    // Serial.print("========================================");
+	// delay(delayAfter);
   }
 }
 short read_raw_data_magnet(int addr){
