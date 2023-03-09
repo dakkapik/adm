@@ -63,11 +63,11 @@ short read_raw_data(int addr){
 	return value;
 }
 
-void setGyroOffsets (float x, float y, float z) {
-	gyroXoffset = x;
-  gyroYoffset = y;
-  gyroZoffset = z;
-}
+// void setGyroOffsets (float x, float y, float z) {
+// 	gyroXoffset = x;
+//   gyroYoffset = y;
+//   gyroZoffset = z;
+// }
 
 // void calcOffsets(bool console){
 // 	float x = 0, y = 0, z = 0;
