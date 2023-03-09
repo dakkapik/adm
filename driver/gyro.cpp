@@ -186,7 +186,7 @@ int main(){
 
 		Total_angle[2] = (Total_angle[2] + Gyro_angle[2]*elapsedTime);
 
-		printf("%f,%f,%f,%f,%f,%f\r", Total_angle[0], Total_angle[1], Total_angle[2], magnet[0], magnet[1], magnet[2]);
+		printf("%f,%f,%f,\r", Total_angle[0], Total_angle[1], Total_angle[2]);
 
 		fflush(stdout);
 	}
