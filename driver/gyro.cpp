@@ -1,5 +1,5 @@
-// #include <wiringPiI2C.h>
-// #include <wiringPi.h>
+#include <wiringPiI2C.h>
+#include <wiringPi.h>
 
 #define _USE_MATH_DEFINES
  
@@ -96,16 +96,17 @@ void calcOffsets(bool console){
   gyroYoffset = y / 3000;
   gyroZoffset = z / 3000;
 
-//   if(console){
-//     Serial.println();
-//     Serial.println("Done!");
-//     Serial.print("X : ");Serial.println(gyroXoffset);
-//     Serial.print("Y : ");Serial.println(gyroYoffset);
-//     Serial.print("Z : ");Serial.println(gyroZoffset);
-//     Serial.println("Program will start after 3 seconds");
-//     Serial.print("========================================");
-// 		delay(delayAfter);
-	}
+  if(console){
+    Serial.println();
+    Serial.println("Done!");
+    Serial.print("X : ");Serial.println(gyroXoffset);
+    Serial.print("Y : ");Serial.println(gyroYoffset);
+    Serial.print("Z : ");Serial.println(gyroZoffset);
+    Serial.println("Program will start after 3 seconds");
+    Serial.print("========================================");
+	delay(delayAfter);
+  }
+}
 short read_raw_data_magnet(int addr){
 	short high_byte,low_byte,value;
 	high_byte = wiringPiI2CReadReg8(fd, addr);
