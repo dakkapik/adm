@@ -74,12 +74,12 @@ void calcOffsets(bool console){
 	int16_t rx, ry, rz;
 
 //   delay(delayBefore);
-// 	if(console){
+	if(console){
 //     Serial.println();
 //     Serial.println("========================================");
 //     Serial.println("Calculating gyro offsets");
 //     Serial.print("DO NOT MOVE MPU6050");
-//   }
+  }
   for(int i = 0; i < 3000; i++){
     if(console && i % 1000 == 0){
     //   Serial.print(".");
@@ -161,8 +161,8 @@ int main(){
 		Gyro_angle[0] = Gyr_rawX/131.0; 
 		/*---Y---*/
 		Gyro_angle[1] = Gyr_rawY/131.0;
-        Gyro_angle[2] = Gyr_rawZ/131.0;
-        // Gyro_angle[2] = Gyr_rawZ/65.5;
+        // Gyro_angle[2] = Gyr_rawZ/131.0;
+        Gyro_angle[2] = Gyr_rawZ/65.5;
 
 		Gyro_angle[0] -= gyroXoffset;
 		Gyro_angle[1] -= gyroYoffset;
@@ -176,7 +176,7 @@ int main(){
 		magnet[0] = magnet_rawX/131.0;
 		/*---Y---*/
 		magnet[1] = magnet_rawY/131.0;
-        	magnet[2] = magnet_rawZ/131.0;
+        magnet[2] = magnet_rawZ/131.0;
 		
 		/*---X axis angle---*/
 		Total_angle[0] = 0.98 *(Total_angle[0] + Gyro_angle[0]*elapsedTime) + 0.02*Acceleration_angle[0];
