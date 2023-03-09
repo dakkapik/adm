@@ -63,6 +63,7 @@ int main(){
 	float Acceleration_angle[3];
 	float Gyro_angle[3];
 	float Total_angle[3];
+	float magnet[3];
 	float elapsedTime, time, timePrev;
 	int i;
 	float rad_to_deg = 180/3.141592654;
@@ -110,7 +111,7 @@ int main(){
         // Total_angle[2] =  0.98 *(Total_angle[2] + Gyro_angle[2]*elapsedTime);
 		Total_angle[2] =  atan(Gyro_angle[1]/(sqrt(pow(Gyro_angle[0],2)+pow(Gyro_angle[2],2))));
 
-		printf("%f,%f,%f\r", Total_angle[0], Total_angle[1], Total_angle[2]);
+		printf("%f,%f,%f,%f,%f,%f\r", Total_angle[0], Total_angle[1], Total_angle[2], magnet[0], magnet[1], magnet[2]);
 
 		fflush(stdout);
 	}
