@@ -165,22 +165,19 @@ int main(){
 		/*---Y---*/
 		Gyro_angle[1] = Gyr_rawY/131.0;
         Gyro_angle[2] = Gyr_rawZ/131.0;
-        // Gyro_angle[2] = Gyr_rawZ/65.5;
 
 		Gyro_angle[0] -= gyroXoffset;
 		Gyro_angle[1] -= gyroYoffset;
         Gyro_angle[2] -= gyroZoffset;
 
 
-		magnet_rawX = read_raw_data_magnet(AK8963_XOUT_H);
-		magnet_rawY = read_raw_data_magnet(AK8963_YOUT_H);
-		magnet_rawZ = read_raw_data_magnet(AK8963_ZOUT_H);
+		// magnet_rawX = read_raw_data_magnet(AK8963_XOUT_H);
+		// magnet_rawY = read_raw_data_magnet(AK8963_YOUT_H);
+		// magnet_rawZ = read_raw_data_magnet(AK8963_ZOUT_H);
 		
-		/*---X---*/
-		magnet[0] = magnet_rawX/131.0;
-		/*---Y---*/
-		magnet[1] = magnet_rawY/131.0;
-        magnet[2] = magnet_rawZ/131.0;
+		// magnet[0] = magnet_rawX/131.0;
+		// magnet[1] = magnet_rawY/131.0;
+        // magnet[2] = magnet_rawZ/131.0;
 		
 		/*---X axis angle---*/
 		Total_angle[0] = 0.98 *(Total_angle[0] + Gyro_angle[0]*elapsedTime) + 0.02*Acceleration_angle[0];
