@@ -51,7 +51,7 @@ void MPU6050_Init(){
 	wiringPiI2CWriteReg8 (fd, CONFIG, 0);		/* Write to Configuration register */
 	wiringPiI2CWriteReg8 (fd, GYRO_CONFIG, 24);	/* Write to Gyro Configuration register */
 	wiringPiI2CWriteReg8 (fd, INT_ENABLE, 0x01);	/* Write to interrupt enable register */
-	wiringPiI2CWriteReg8 (fd, AK8963_CNTL, 0x06);	/* Write to magnetometer Control register */
+	wiringPiI2CWriteReg8 (fd, AK8963_CNTL, 0x02);	/* Write to magnetometer Control register */
 
 } 
 
