@@ -63,7 +63,7 @@ void ms_delay(int val){
 }
 
 int main(){
-	int16_t Acc_rawX, Acc_rawY, Acc_rawZ,Gyr_rawX, Gyr_rawY, Gyr_rawZ;
+	int16_t Acc_rawX, Acc_rawY, Acc_rawZ,Gyr_rawX, Gyr_rawY, Gyr_rawZ, magnet_rawX, magnet_rawY, magnet_rawZ;
 	float Acceleration_angle[3];
 	float Gyro_angle[3];
 	float Total_angle[3];
