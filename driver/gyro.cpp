@@ -1,5 +1,5 @@
-#include <wiringPiI2C.h>
-#include <wiringPi.h>
+// #include <wiringPiI2C.h>
+// #include <wiringPi.h>
 
 #define _USE_MATH_DEFINES
  
@@ -133,7 +133,7 @@ int main(){
 	float elapsedTime, time, timePrev;
 	int i;
 	float rad_to_deg = 180/3.141592654;
-	
+	float tempZ;
 	// setGyroOffsets(1.45, 1.23, -1.32);
 
 	fd = wiringPiI2CSetup(Device_Address);   /*Initializes I2C with device Address*/
@@ -170,6 +170,7 @@ int main(){
 		Gyro_angle[1] -= gyroYoffset;
         Gyro_angle[2] -= gyroZoffset;
 
+		tempZ += Gyro_angle[2] * elapsedTime;
 
 		// magnet_rawX = read_raw_data_magnet(AK8963_XOUT_H);
 		// magnet_rawY = read_raw_data_magnet(AK8963_YOUT_H);
@@ -184,9 +185,9 @@ int main(){
 		/*---Y axis angle---*/
 		Total_angle[1] = 0.98 *(Total_angle[1] + Gyro_angle[1]*elapsedTime) + 0.02*Acceleration_angle[1];
 
-		Total_angle[2] = (Total_angle[2] + Gyro_angle[2]*elapsedTime);
+		Total_angle[2] = tempZ;
 
-		printf("%f,%f,%f,\r", Total_angle[0], Total_angle[1], Total_angle[2]);
+		printf("%f,%f,%f\r", Total_angle[0], Total_angle[1], Total_angle[2]);
 
 		fflush(stdout);
 	}
