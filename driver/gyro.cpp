@@ -170,7 +170,7 @@ int main(){
 		Gyro_angle[1] -= gyroYoffset;
         Gyro_angle[2] -= gyroZoffset;
 
-		tempZ += Gyro_angle[2] * elapsedTime;
+		tempZ += Gyro_angle[2] * 0.11;
 
 		// magnet_rawX = read_raw_data_magnet(AK8963_XOUT_H);
 		// magnet_rawY = read_raw_data_magnet(AK8963_YOUT_H);
