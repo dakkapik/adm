@@ -140,7 +140,7 @@ int main(){
 	{
 		timePrev = time;  // the previous time is stored before the actual time read
 		time = ms.count();  // actual time read
-		elapsedTime = (time - timePrev) / 1000;
+		elapsedTime = (time - timePrev) * 0.001;
 		
 		Acc_rawX = read_raw_data(ACCEL_XOUT_H);
 		Acc_rawY = read_raw_data(ACCEL_YOUT_H);
@@ -161,12 +161,13 @@ int main(){
 		Gyro_angle[0] = Gyr_rawX/131.0; 
 		/*---Y---*/
 		Gyro_angle[1] = Gyr_rawY/131.0;
-        // Gyro_angle[2] = Gyr_rawZ/131.0;
-        Gyro_angle[2] = Gyr_rawZ/65.5;
+        Gyro_angle[2] = Gyr_rawZ/131.0;
+        // Gyro_angle[2] = Gyr_rawZ/65.5;
 
 		Gyro_angle[0] -= gyroXoffset;
 		Gyro_angle[1] -= gyroYoffset;
         Gyro_angle[2] -= gyroZoffset;
+
 
 		magnet_rawX = read_raw_data_magnet(AK8963_XOUT_H);
 		magnet_rawY = read_raw_data_magnet(AK8963_YOUT_H);
@@ -181,7 +182,7 @@ int main(){
 		/*---X axis angle---*/
 		Total_angle[0] = 0.98 *(Total_angle[0] + Gyro_angle[0]*elapsedTime) + 0.02*Acceleration_angle[0];
 		/*---Y axis angle---*/
-		Total_angle[1] =  atan(-1*(Acc_rawX/16384.0)/sqrt(pow((Acc_rawY/16384.0),2) + pow((Acc_rawZ/16384.0),2)))*rad_to_deg;
+		Total_angle[1] = 0.98 *(Total_angle[1] + Gyro_angle[1]*elapsedTime) + 0.02*Acceleration_angle[1];
 
 		Total_angle[2] = Total_angle[2] + Gyro_angle[2]*elapsedTime;
 
