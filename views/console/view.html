@@ -125,10 +125,10 @@
     let packetCount = 0;
 
     socket.on("py-data", (g,a,m,t,c,o) => {
-        console.log(g,a,m,t,c,o)
+        console.log(g,m,o)
 
         frequencyDiv.innerHTML = `${1/(c/t)}`
-        headingDiv.innerHTML = `${m[3]}`
+        headingDiv.innerHTML = `${m[2]}`
 
         if(packetCount < BUFFER_SIZE) {
             gyroBuffer[0].y[packetCount] = g[0]
