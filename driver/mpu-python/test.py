@@ -26,5 +26,5 @@ def initLoop ():
 
         # sio.emit('py-mpu','data')
 
-sio.connect('http://192.168.2.13:3000')
+sio.connect('http://192.168.2.16:3000')
 sio.wait()
