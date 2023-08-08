@@ -22,15 +22,9 @@ def initLoop ():
     while sio.handle_sigint:
         # try:
         data = sensor.read_data()
-<<<<<<< Updated upstream
         # print(data)
 
-        sio.emit('py-mpu',data)
-=======
-        print(data)
-
         # sio.emit('py-mpu','data')
->>>>>>> Stashed changes
 
 sio.connect('http://192.168.2.13:3000')
 sio.wait()
