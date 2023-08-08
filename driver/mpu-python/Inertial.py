@@ -46,6 +46,7 @@ class Gyroscope():
 
 		return wX, wY,wZ
 
+	def reader(self, register):
 		# read accel and gyro values
 		high = bus.read_byte_data(MPU6050_ADDR, register)
 		low = bus.read_byte_data(MPU6050_ADDR, register+1)
@@ -196,7 +197,7 @@ class InertialSensor():
 		c = self.cycle
 		self.cycle = self.cycle + 1
 
-		return gyro, accel, mag, t, c, self.gintegration
+		return gyro, accel, mag, t, c,self.gintegration
 
 
 	def config_MPU(self):
