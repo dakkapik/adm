@@ -21,7 +21,7 @@ def initLoop ():
     print("EMITING")
     while sio.handle_sigint:
         # try:
-        data = sensor.read_data()
+        data = sensor.read_angles()
 
         sio.emit('py-mpu', data)
 

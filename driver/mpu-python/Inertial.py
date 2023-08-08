@@ -1,4 +1,4 @@
-import time, sys, json
+import time, sys, json, math
 import smbus2
 
 MPU6050_ADDR = 0x68
@@ -56,8 +56,8 @@ class Gyroscope():
 
 class Accelerometer():
 	def __init__(self, sense_index = 0) -> None:
+		self.sense_index = sense_index
 		self.sense_config_val = [2.0,4.0,8.0,16.0]
-		self.sense = self.sense_config_val[sense_index]
 		pass
 
 	def read(self):
@@ -67,12 +67,21 @@ class Accelerometer():
 		acc_z = self.reader(ACCEL_ZOUT_H)
 		return acc_x, acc_y, acc_z
 
-	def angles(self):
+	def normalize(self):
 		acc_x, acc_y, acc_z = self.read()
-		a_x = (acc_x/(2.0**15.0))*self.sense 
-		a_y = (acc_y/(2.0**15.0))*self.sense 
-		a_z = (acc_z/(2.0**15.0))*self.sense 
+		a_x = (acc_x/(2.0**15.0))*self.sense_config_val[self.sense_index]
+		a_y = (acc_y/(2.0**15.0))*self.sense_config_val[self.sense_index]
+		a_z = (acc_z/(2.0**15.0))*self.sense_config_val[self.sense_index]
 		return a_x, a_y, a_z
+
+	def angles(self):
+		a_x, a_y, a_z = self.normalize()
+		x = math.atan2 ( a_y, math.sqrt ( a_z *  a_z  + a_x * a_x)) * (180 / math.pi)
+		y = math.atan2 (- a_x, math.sqrt( a_z *  a_z + a_y * a_y)) * (180 / math.pi)
+		z = math.atan2 (math.sqrt( a_x *  a_x + a_y * a_y), a_z) * (180 / math.pi)
+		return x, y, z
+
+
 
 	def reader(self, register):
 		# read accel and gyro values
@@ -118,10 +127,20 @@ class InertialSensor():
 		self.time_init = time.time()
 		self.cycle = 0
 
-	def read_data(self):
+	def read_raw_data(self):
+		gyro = self.gyro.read()
+		accel = self.accel.read()
+		mag = self.mag.read()
+		t = time.time() - self.time_init
+		c = self.cycle
+		self.cycle = self.cycle + 1
+		return gyro, accel, mag, t, c
+
+	def read_angles(self):
 		gyro = self.gyro.read()
 		accel = self.accel.angles()
 		mag = self.mag.read()
+		
 		t = time.time() - self.time_init
 		c = self.cycle
 		self.cycle = self.cycle + 1
