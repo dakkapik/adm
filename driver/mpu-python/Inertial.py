@@ -148,13 +148,15 @@ class InertialSensor():
 		self.accel = Accelerometer()
 		self.mag = Magnetometer()
 
-		self.gintegration = [0,0,0]
+		self.roll = 0
+		self.pitch = 0
+		self.yaw = 0
 
 		self.time_init = time.time()
 		self.prev_time = 0
 
 		self.cycle = 0
-
+		
 	def setTimeRef(self):
 		self.prev_time = time.time()
 
@@ -189,15 +191,15 @@ class InertialSensor():
 
 		t = self.getTimeEleapsed()
 
-		self.gintegration[0] =  0.96* ( (self.gintegration[0] +  gyro[0]) *  t ) + 0.04*accel[0]
-		self.gintegration[1] =  0.96* ( (self.gintegration[1] +  gyro[1]) *  t ) + 0.04*accel[1]
-		self.gintegration[2] =  0.96* ( (self.gintegration[2] +  gyro[2]) *  t ) + 0.04*accel[2]
+		self.roll =  0.96* ( (self.roll +  gyro[0]) *  t ) + 0.04*accel[0]
+		self.pitch =  0.96* ( (self.pitch +  gyro[1]) *  t ) + 0.04*accel[1]
+		self.yaw =  0.96* ( (self.yaw +  gyro[2]) *  t ) + 0.04*accel[2]
 
 		t = time.time() - self.time_init
 		c = self.cycle
 		self.cycle = self.cycle + 1
 
-		return gyro, accel, mag, t, c,self.gintegration
+		return gyro, accel, mag, t, c, [ self.roll, self.pitch, self.yaw ]
 
 
 	def config_MPU(self):

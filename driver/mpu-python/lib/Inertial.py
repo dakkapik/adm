@@ -4,6 +4,8 @@ import smbus2
 
 from lib import config
 
+cfg = config.getConfigVals()
+
 bus =  smbus2.SMBus(1) # start comm with i2c bus
 
 class Gyroscope():
