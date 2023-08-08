@@ -21,18 +21,17 @@ socket.on('h-order', (h) => {
     tics++
 })
 
-socket.on('py-data', (data) => {
-    // console.log(gx)
-    let [gx, gy, gz, ax, ay,az,mx,my,mz, h] = data.split(',')
-    const gyro =    {x: parseFloat(gx), y:parseFloat(gy), z: parseFloat(gz)}
-    const accel =   {x: parseFloat(ax), y:parseFloat(ay), z: parseFloat(az)}
-    const mag =     {x: parseFloat(mz), y:parseFloat(my), z: parseFloat(mx)}
+socket.on('py-data', (g,a,m,t,c,o) => {
 
-    // h=parseFloat(h);
+    const gyro =    {x: parseFloat(o[0]), y:parseFloat(o[1]), z: parseFloat(o[2])}
+    const accel =   {x: parseFloat(a[0]), y:parseFloat(a[1]), z: parseFloat(a[2])}
+    const mag =     {x: parseFloat(m[0]), y:parseFloat(m[1]), z: parseFloat(m[2])}
+
+    console.log(o)
     updateGyroDisplay(gyro);
-    updateAccelDisplay(accel);
-    updateMagDisplay(mag);
-    // updateHeadingDisplay(h);
+    // updateAccelDisplay(accel);
+    // updateMagDisplay(mag);
+    // updateHeadingDisplay(mag[2]);
 
     if(tics === 0) {
         // hAxis.h = h;

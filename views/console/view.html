@@ -124,8 +124,8 @@
 
     let packetCount = 0;
 
-    socket.on("py-data", (g,a,m,t, c) => {
-        console.log(g,a,m,t,c)
+    socket.on("py-data", (g,a,m,t,c,o) => {
+        console.log(g,a,m,t,c,o)
 
         frequencyDiv.innerHTML = `${1/(c/t)}`
         headingDiv.innerHTML = `${m[3]}`
