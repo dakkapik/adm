@@ -14,7 +14,7 @@ function exec () {
     })
 
     socket.on("py-mpu", (g, a, m, t) => {
-      console.log('py')
+      
       io.emit('py-data', g,a,m, t)
     })
 
