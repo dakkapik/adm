@@ -97,14 +97,32 @@ class Accelerometer():
 		return value
 
 class Magnetometer():
-	def __init__(self) -> None:
+	def __init__(self, sense_index =0) -> None:
+		self.sense_index = sense_index
+		self.sense_config_val = [4900.0]
 		pass
 
 	def read(self):
-		mag_x = self.reader(HXH)
-		mag_y = self.reader(HYH)
-		mag_z = self.reader(HZH)
-		return mag_x, mag_y, mag_z
+		loop_count = 0
+
+		while 1:
+			mag_x = self.reader(HXH)
+			mag_y = self.reader(HYH)
+			mag_z = self.reader(HZH)
+
+			if bin(bus.read_byte_data(AK8963_ADDR,AK8963_ST2))=='0b10000':
+				return mag_x, mag_y, mag_z
+			loop_count+=1
+
+	def normalize(self):
+		mag_x, mag_y, mag_z = self.read()
+		m_x = (mag_x/(2.0**15.0))*self.sense_config_val[self.sense_index]
+		m_y = (mag_y/(2.0**15.0))*self.sense_config_val[self.sense_index]
+		m_z = (mag_z/(2.0**15.0))*self.sense_config_val[self.sense_index]
+		return m_x, m_y, m_z
+	
+	# def angles(self):
+
 
 	def reader(self, register):
 		# read magnetometer values
@@ -139,8 +157,8 @@ class InertialSensor():
 	def read_angles(self):
 		gyro = self.gyro.read()
 		accel = self.accel.angles()
-		mag = self.mag.read()
-		
+		mag = self.mag.normalize()
+
 		t = time.time() - self.time_init
 		c = self.cycle
 		self.cycle = self.cycle + 1
