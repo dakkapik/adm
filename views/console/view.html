@@ -16,77 +16,83 @@
 <script>
     const RANGE = 400
     const range = new Array(RANGE)
-    for(let i =0; i < range.length; i++){
-        range[i] = i
-    }
 
     const gyroX = {
-        x: range,
+        x: [],
         y: [],
         margin: {t: 0},
         mode:"lines",
         name: "X"
     }
     const gyroY = {
-        x: range,
+        x: [],
         y: [],
         margin: {t: 0},
         mode:"lines",
         name: "Y"
     }
     const gyroZ = {
-        x: range,
+        x: [],
         y: [],
         margin: {t: 0},
         mode:"lines",
         name: "Z"
     }
     const accelX = {
-        x: range,
+        x: [],
         y: [],
         margin: {t: 0},
         mode:"lines",
         name: "X"
     }
     const accelY = {
-        x: range,
+        x: [],
         y: [],
         margin: {t: 0},
         mode:"lines",
         name: "Y"
     }
     const accelZ = {
-        x: range,
+        x: [],
         y: [],
         margin: {t: 0},
         mode:"lines",
         name: "Z"
     }
     const magX = {
-        x: range,
+        x: [],
         y: [],
         margin: {t: 0},
         mode:"lines",
         name: "X"
     }
     const magY = {
-        x: range,
+        x: [],
         y: [],
         margin: {t: 0},
         mode:"lines",
         name: "Y"
     }
     const magZ = {
-        x: range,
+        x: [],
         y: [],
         margin: {t: 0},
         mode:"lines",
         name: "Z"
     }
+</script>
+<script>
+    
+    const BUFFER_SIZE = 5;
 
-    const gyroData = [gyroX, gyroY, gyroZ]
-    const accelData = [accelX, accelY, accelZ]
-    const magData = [magX, magY, magZ]
+    const gyroData =    [gyroX, gyroY, gyroZ]
+    const accelData =   [accelX, accelY, accelZ]
+    const magData =     [magX, magY, magZ]
+
+    const gyroBuffer = [{x:new Array(BUFFER_SIZE),y:new Array(BUFFER_SIZE)}, {x:new Array(BUFFER_SIZE),y:new Array(BUFFER_SIZE)},{x:new Array(BUFFER_SIZE),y:new Array(BUFFER_SIZE)}]
+    const accelBuffer = [{x:new Array(BUFFER_SIZE),y:new Array(BUFFER_SIZE)}, {x:new Array(BUFFER_SIZE),y:new Array(BUFFER_SIZE)},{x:new Array(BUFFER_SIZE),y:new Array(BUFFER_SIZE)}]
+    const magBuffer =   [{x:new Array(BUFFER_SIZE),y:new Array(BUFFER_SIZE)}, {x:new Array(BUFFER_SIZE),y:new Array(BUFFER_SIZE)},{x:new Array(BUFFER_SIZE),y:new Array(BUFFER_SIZE)}]
+
 
 </script>
 <script> 
@@ -104,46 +110,88 @@
         socket.emit("ID", "console")
     })
 
-    socket.on("py-data", (g,a,m) => {
-        console.log(g,a,m)
+    let packetCount = 0;
 
-        i ++;
-        if(i < range.length) {
-            gyroData[0].y.push(g[0])
-            gyroData[1].y.push(g[1])
-            gyroData[2].y.push(g[2])
+    socket.on("py-data", (g,a,m,t) => {
+        console.log(g,a,m,t)
 
-            accelData[0].y.push(a[0])
-            accelData[1].y.push(a[1])
-            accelData[2].y.push(a[2])
+        if(PacketCount < BUFFER_SIZE) {
+            gyroBuffer[0].y[packetCount] = g[0]
+            gyroBuffer[0].x[packetCount] = t
+            gyroBuffer[1].y[packetCount] = g[1]
+            gyroBuffer[1].x[packetCount] = t
+            gyroBuffer[2].y[packetCount] = g[2]
+            gyroBuffer[2].x[packetCount] = t
 
-            magData[0].y.push(m[0])
-            magData[1].y.push(m[1])
-            magData[2].y.push(m[2])
         } else {
-            gyroData[0].y.shift(g[0])
-            gyroData[1].y.shift(g[1])
-            gyroData[2].y.shift(g[2])
-            accelData[0].y.shift(a[0])
-            accelData[1].y.shift(a[1])
-            accelData[2].y.shift(a[2])
-            magData[0].y.shift(m[0])
-            magData[1].y.shift(m[1])
-            magData[2].y.shift(m[2])
-            gyroData[0].y.push(g[0])
-            gyroData[1].y.push(g[1])
-            gyroData[2].y.push(g[2])
-            accelData[0].y.push(a[0])
-            accelData[1].y.push(a[1])
-            accelData[2].y.push(a[2])
-            magData[0].y.push(m[0])
-            magData[1].y.push(m[1])
-            magData[2].y.push(m[2])
+            packetCount = 0
+
+            if(gyroData[0].x.length + packetCount < RANGE) {
+                gyroData[0].y = gyroData[0].y.concat(gyroBuffer[0].y) 
+                gyroData[0].x = gyroData[0].x.concat(gyroBuffer[0].x)
+                gyroData[1].y = gyroData[1].y.concat(gyroBuffer[1].y) 
+                gyroData[1].x = gyroData[1].x.concat(gyroBuffer[1].x)
+                gyroData[2].y = gyroData[2].y.concat(gyroBuffer[2].y) 
+                gyroData[2].x = gyroData[2].x.concat(gyroBuffer[2].x)
+                
+                Plotly.newPlot( gyroPlot, gyroData, {title: "Gyroscope"});
+            } else {
+                // slice then concat
+                let xgyt = gyroData[0].y.slice(BUFFER_SIZE)
+                let xgxt = gyroData[0].x.slice(BUFFER_SIZE)
+                let ygyt = gyroData[1].y.slice(BUFFER_SIZE)
+                let ygxt = gyroData[1].x.slice(BUFFER_SIZE)
+                let zgyt = gyroData[2].y.slice(BUFFER_SIZE)
+                let zgxt = gyroData[2].x.slice(BUFFER_SIZE)
+
+                gyroData[0].y = xgyt.concat(gyroBuffer[0].y) 
+                gyroData[0].x = xgxt.concat(gyroBuffer[0].x)
+                gyroData[1].y = ygyt.concat(gyroBuffer[1].y) 
+                gyroData[1].x = ygxt.concat(gyroBuffer[1].x)
+                gyroData[2].y = zgyt.concat(gyroBuffer[2].y) 
+                gyroData[2].x = zgxt.concat(gyroBuffer[2].x)
+
+                //only graph again after crunch buffer
+                Plotly.newPlot( gyroPlot, gyroData, {title: "Gyroscope"});
+            }
         }
 
-        Plotly.newPlot( gyroPlot, gyroData, {title: "Gyroscope"});
-        Plotly.newPlot( accelPlot, accelData, {title: "Accelerometer"});
-        Plotly.newPlot( magPlot, magData, {title: "Magnetometer"});
+        // if(i < range.length) {
+            // gyroData[0].y.push(g[0])
+            // gyroData[1].y.push(g[1])
+            // gyroData[2].y.push(g[2])
+
+            // accelData[0].y.push(a[0])
+            // accelData[1].y.push(a[1])
+            // accelData[2].y.push(a[2])
+
+            // magData[0].y.push(m[0])
+            // magData[1].y.push(m[1])
+            // magData[2].y.push(m[2])
+        // } else {
+        //     gyroData[0].y.shift(g[0])
+        //     gyroData[1].y.shift(g[1])
+        //     gyroData[2].y.shift(g[2])
+        //     accelData[0].y.shift(a[0])
+        //     accelData[1].y.shift(a[1])
+        //     accelData[2].y.shift(a[2])
+        //     magData[0].y.shift(m[0])
+        //     magData[1].y.shift(m[1])
+        //     magData[2].y.shift(m[2])
+        //     gyroData[0].y.push(g[0])
+        //     gyroData[1].y.push(g[1])
+        //     gyroData[2].y.push(g[2])
+        //     accelData[0].y.push(a[0])
+        //     accelData[1].y.push(a[1])
+        //     accelData[2].y.push(a[2])
+        //     magData[0].y.push(m[0])
+        //     magData[1].y.push(m[1])
+        //     magData[2].y.push(m[2])
+        // }
+
+        
+        // Plotly.newPlot( accelPlot, accelData, {title: "Accelerometer"});
+        // Plotly.newPlot( magPlot, magData, {title: "Magnetometer"});
 
         //MULTIPLE PLOTS REDUCES RESPONCE TIME
     })

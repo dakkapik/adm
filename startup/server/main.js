@@ -13,9 +13,9 @@ function exec () {
       console.log("CONNECTION: ", id)
     })
 
-    socket.on("py-mpu", (g, a, m) => {
-
-      io.emit('py-data', g,a,m)
+    socket.on("py-mpu", (g, a, m, t) => {
+      console.log('py')
+      io.emit('py-data', g,a,m, t)
     })
 
     socket.on("orientation", (data)=> {
