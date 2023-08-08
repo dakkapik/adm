@@ -28,8 +28,8 @@ bus =  smbus2.SMBus(1) # start comm with i2c bus
 
 class Gyroscope():
 	def __init__(self, sense_index = 0) -> None:
+		self.sense_index = sense_index
 		self.config_config_val = [250.0,500.0,1000.0,2000.0]
-		self.sense = self.config_config_val[sense_index]
 		pass
 	
 	def read(self):
@@ -38,10 +38,14 @@ class Gyroscope():
 		gyro_z = self.reader(GYRO_ZOUT_H)
 		return gyro_x, gyro_y, gyro_z
 
-	# def angles(self):
+	def angles(self):
+		gyro_x, gyro_y, gyro_z = self.read()
+		wX = (gyro_x/(2.0**15.0))*self.config_config_val[self.sense_index]
+		wY = (gyro_y/(2.0**15.0))*self.config_config_val[self.sense_index]
+		wZ = (gyro_z/(2.0**15.0))*self.config_config_val[self.sense_index]
 
+		return wX, wY,wZ
 
-	def reader(self, register):
 		# read accel and gyro values
 		high = bus.read_byte_data(MPU6050_ADDR, register)
 		low = bus.read_byte_data(MPU6050_ADDR, register+1)
@@ -142,8 +146,19 @@ class InertialSensor():
 		self.gyro = Gyroscope()
 		self.accel = Accelerometer()
 		self.mag = Magnetometer()
+
+		self.gintegration = [0,0,0]
+
 		self.time_init = time.time()
+		self.prev_time = 0
+
 		self.cycle = 0
+
+	def setTimeRef(self):
+		self.prev_time = time.time()
+
+	def getTimeEleapsed(self):
+		return time.time() - self.prev_time
 
 	def read_raw_data(self):
 		gyro = self.gyro.read()
@@ -155,7 +170,7 @@ class InertialSensor():
 		return gyro, accel, mag, t, c
 
 	def read_angles(self):
-		gyro = self.gyro.read()
+		gyro = self.gyro.angles()
 		accel = self.accel.angles()
 		mag = self.mag.heading()
 
@@ -163,6 +178,26 @@ class InertialSensor():
 		c = self.cycle
 		self.cycle = self.cycle + 1
 		return gyro, accel, mag, t, c
+	
+	def comp_filter(self):
+		self.setTimeRef()
+
+		gyro = self.gyro.angles()
+		accel = self.accel.angles()
+		mag = self.mag.heading()
+
+		t = self.getTimeEleapsed()
+
+		self.gintegration[0] =  0.96* ( (self.gintegration[0] +  gyro[0]) *  t ) + 0.04*accel[0]
+		self.gintegration[1] =  0.96* ( (self.gintegration[1] +  gyro[1]) *  t ) + 0.04*accel[1]
+		self.gintegration[2] =  0.96* ( (self.gintegration[2] +  gyro[2]) *  t ) + 0.04*accel[2]
+
+		t = time.time() - self.time_init
+		c = self.cycle
+		self.cycle = self.cycle + 1
+
+		return gyro, accel, mag, t, c, self.gintegration
+
 
 	def config_MPU(self):
 		samp_rate_div = 0 # sample rate = 8 kHz/(1+samp_rate_div)
