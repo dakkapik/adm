@@ -27,7 +27,9 @@ AK8963_CNTL  = 0x0A
 bus =  smbus2.SMBus(1) # start comm with i2c bus
 
 class Gyroscope():
-	def __init__(self) -> None:
+	def __init__(self, sense_index = 0) -> None:
+		self.config_config_val = [250.0,500.0,1000.0,2000.0]
+		self.sense = self.config_config_val[sense_index]
 		pass
 	
 	def read(self):
@@ -35,6 +37,9 @@ class Gyroscope():
 		gyro_y = self.reader(GYRO_YOUT_H)
 		gyro_z = self.reader(GYRO_ZOUT_H)
 		return gyro_x, gyro_y, gyro_z
+
+	# def angles(self):
+
 
 	def reader(self, register):
 		# read accel and gyro values
@@ -50,7 +55,9 @@ class Gyroscope():
 		return value
 
 class Accelerometer():
-	def __init__(self) -> None:
+	def __init__(self, sense_index = 0) -> None:
+		self.sense_config_val = [2.0,4.0,8.0,16.0]
+		self.sense = self.sense_config_val[sense_index]
 		pass
 
 	def read(self):
@@ -59,6 +66,13 @@ class Accelerometer():
 		acc_y = self.reader(ACCEL_YOUT_H)
 		acc_z = self.reader(ACCEL_ZOUT_H)
 		return acc_x, acc_y, acc_z
+
+	def angles(self):
+		acc_x, acc_y, acc_z = self.read()
+		a_x = (acc_x/(2.0**15.0))*self.sense 
+		a_y = (acc_y/(2.0**15.0))*self.sense 
+		a_z = (acc_z/(2.0**15.0))*self.sense 
+		return a_x, a_y, a_z
 
 	def reader(self, register):
 		# read accel and gyro values
@@ -106,7 +120,7 @@ class InertialSensor():
 
 	def read_data(self):
 		gyro = self.gyro.read()
-		accel = self.accel.read()
+		accel = self.accel.angles()
 		mag = self.mag.read()
 		t = time.time() - self.time_init
 		c = self.cycle

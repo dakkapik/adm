@@ -8,6 +8,10 @@
 </head>
 <script src="https://cdn.plot.ly/plotly-2.24.1.min.js" charset="utf-8"></script>
 <body>
+    <div style="display: flex;">
+        <p>frequency:   </p>
+        <p id="frequency"></p>
+    </div>
     <div id="gyro" style="width:600px;height:250px;"></div>
     <div id="accel" style="width:600px;height:250px;"></div>
     <div id="mag" style="width:600px;height:250px;"></div>
@@ -99,6 +103,7 @@
     const gyroPlot = document.getElementById('gyro');
     const accelPlot = document.getElementById('accel');
     const magPlot = document.getElementById('mag');    
+    const frequencyDiv = document.getElementById("frequency")
 </script>
 <script>
     let i = 0;
@@ -112,8 +117,10 @@
 
     let packetCount = 0;
 
-    socket.on("py-data", (g,a,m,t) => {
-        console.log(g,a,m,t)
+    socket.on("py-data", (g,a,m,t, c) => {
+        console.log(g,a,m,t,c)
+
+        frequencyDiv.innerHTML = `${1/(c/t)}`
 
         if(packetCount < BUFFER_SIZE) {
             gyroBuffer[0].y[packetCount] = g[0]
@@ -216,43 +223,6 @@
                 Plotly.newPlot( magPlot, magData, {title: "Magnetometer"});
             }
         }
-
-        // if(i < range.length) {
-            // gyroData[0].y.push(g[0])
-            // gyroData[1].y.push(g[1])
-            // gyroData[2].y.push(g[2])
-
-            // accelData[0].y.push(a[0])
-            // accelData[1].y.push(a[1])
-            // accelData[2].y.push(a[2])
-
-            // magData[0].y.push(m[0])
-            // magData[1].y.push(m[1])
-            // magData[2].y.push(m[2])
-        // } else {
-        //     gyroData[0].y.shift(g[0])
-        //     gyroData[1].y.shift(g[1])
-        //     gyroData[2].y.shift(g[2])
-        //     accelData[0].y.shift(a[0])
-        //     accelData[1].y.shift(a[1])
-        //     accelData[2].y.shift(a[2])
-        //     magData[0].y.shift(m[0])
-        //     magData[1].y.shift(m[1])
-        //     magData[2].y.shift(m[2])
-        //     gyroData[0].y.push(g[0])
-        //     gyroData[1].y.push(g[1])
-        //     gyroData[2].y.push(g[2])
-        //     accelData[0].y.push(a[0])
-        //     accelData[1].y.push(a[1])
-        //     accelData[2].y.push(a[2])
-        //     magData[0].y.push(m[0])
-        //     magData[1].y.push(m[1])
-        //     magData[2].y.push(m[2])
-        // }
-
-        
-
-        // Plotly.newPlot( magPlot, magData, {title: "Magnetometer"});
 
     })
 </script>
