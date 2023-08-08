@@ -115,7 +115,7 @@
     socket.on("py-data", (g,a,m,t) => {
         console.log(g,a,m,t)
 
-        if(PacketCount < BUFFER_SIZE) {
+        if(packetCount < BUFFER_SIZE) {
             gyroBuffer[0].y[packetCount] = g[0]
             gyroBuffer[0].x[packetCount] = t
             gyroBuffer[1].y[packetCount] = g[1]
@@ -123,6 +123,21 @@
             gyroBuffer[2].y[packetCount] = g[2]
             gyroBuffer[2].x[packetCount] = t
 
+            accelBuffer[0].y[packetCount] = a[0]
+            accelBuffer[0].x[packetCount] = t
+            accelBuffer[1].y[packetCount] = a[1]
+            accelBuffer[1].x[packetCount] = t
+            accelBuffer[2].y[packetCount] = a[2]
+            accelBuffer[2].x[packetCount] = t
+
+            magBuffer[0].y[packetCount] = m[0]
+            magBuffer[0].x[packetCount] = t
+            magBuffer[1].y[packetCount] = m[1]
+            magBuffer[1].x[packetCount] = t
+            magBuffer[2].y[packetCount] = m[2]
+            magBuffer[2].x[packetCount] = t
+
+            packetCount++
         } else {
             packetCount = 0
 
@@ -133,8 +148,24 @@
                 gyroData[1].x = gyroData[1].x.concat(gyroBuffer[1].x)
                 gyroData[2].y = gyroData[2].y.concat(gyroBuffer[2].y) 
                 gyroData[2].x = gyroData[2].x.concat(gyroBuffer[2].x)
+
+                accelData[0].y = accelData[0].y.concat(accelBuffer[0].y) 
+                accelData[0].x = accelData[0].x.concat(accelBuffer[0].x)
+                accelData[1].y = accelData[1].y.concat(accelBuffer[1].y) 
+                accelData[1].x = accelData[1].x.concat(accelBuffer[1].x)
+                accelData[2].y = accelData[2].y.concat(accelBuffer[2].y) 
+                accelData[2].x = accelData[2].x.concat(accelBuffer[2].x)
                 
+                magData[0].y = magData[0].y.concat(magBuffer[0].y) 
+                magData[0].x = magData[0].x.concat(magBuffer[0].x)
+                magData[1].y = magData[1].y.concat(magBuffer[1].y) 
+                magData[1].x = magData[1].x.concat(magBuffer[1].x)
+                magData[2].y = magData[2].y.concat(magBuffer[2].y) 
+                magData[2].x = magData[2].x.concat(magBuffer[2].x)
+
                 Plotly.newPlot( gyroPlot, gyroData, {title: "Gyroscope"});
+                Plotly.newPlot( accelPlot, accelData, {title: "Accelerometer"});
+                Plotly.newPlot( magPlot, magData, {title: "Magnetometer"});
             } else {
                 // slice then concat
                 let xgyt = gyroData[0].y.slice(BUFFER_SIZE)
@@ -151,8 +182,38 @@
                 gyroData[2].y = zgyt.concat(gyroBuffer[2].y) 
                 gyroData[2].x = zgxt.concat(gyroBuffer[2].x)
 
+                let xayt = accelData[0].y.slice(BUFFER_SIZE)
+                let xaxt = accelData[0].x.slice(BUFFER_SIZE)
+                let yayt = accelData[1].y.slice(BUFFER_SIZE)
+                let yaxt = accelData[1].x.slice(BUFFER_SIZE)
+                let zayt = accelData[2].y.slice(BUFFER_SIZE)
+                let zaxt = accelData[2].x.slice(BUFFER_SIZE)
+
+                accelData[0].y = xayt.concat(accelBuffer[0].y) 
+                accelData[0].x = xaxt.concat(accelBuffer[0].x)
+                accelData[1].y = yayt.concat(accelBuffer[1].y) 
+                accelData[1].x = yaxt.concat(accelBuffer[1].x)
+                accelData[2].y = zayt.concat(accelBuffer[2].y) 
+                accelData[2].x = zaxt.concat(accelBuffer[2].x)
+
+                let xmyt = magData[0].y.slice(BUFFER_SIZE)
+                let xmxt = magData[0].x.slice(BUFFER_SIZE)
+                let ymyt = magData[1].y.slice(BUFFER_SIZE)
+                let ymxt = magData[1].x.slice(BUFFER_SIZE)
+                let zmyt = magData[2].y.slice(BUFFER_SIZE)
+                let zmxt = magData[2].x.slice(BUFFER_SIZE)
+
+                magData[0].y = xmyt.concat(magBuffer[0].y) 
+                magData[0].x = xmxt.concat(magBuffer[0].x)
+                magData[1].y = ymyt.concat(magBuffer[1].y) 
+                magData[1].x = ymxt.concat(magBuffer[1].x)
+                magData[2].y = zmyt.concat(magBuffer[2].y) 
+                magData[2].x = zmxt.concat(magBuffer[2].x)
+
                 //only graph again after crunch buffer
                 Plotly.newPlot( gyroPlot, gyroData, {title: "Gyroscope"});
+                Plotly.newPlot( accelPlot, accelData, {title: "Accelerometer"});
+                Plotly.newPlot( magPlot, magData, {title: "Magnetometer"});
             }
         }
 
@@ -190,10 +251,9 @@
         // }
 
         
-        // Plotly.newPlot( accelPlot, accelData, {title: "Accelerometer"});
+
         // Plotly.newPlot( magPlot, magData, {title: "Magnetometer"});
 
-        //MULTIPLE PLOTS REDUCES RESPONCE TIME
     })
 </script>
 </html>

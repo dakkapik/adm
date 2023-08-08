@@ -102,13 +102,16 @@ class InertialSensor():
 		self.accel = Accelerometer()
 		self.mag = Magnetometer()
 		self.time_init = time.time()
+		self.cycle = 0
 
 	def read_data(self):
 		gyro = self.gyro.read()
 		accel = self.accel.read()
 		mag = self.mag.read()
 		t = time.time() - self.time_init
-		return gyro, accel, mag, t
+		c = self.cycle
+		self.cycle = self.cycle + 1
+		return gyro, accel, mag, t, c
 
 	def config_MPU(self):
 		samp_rate_div = 0 # sample rate = 8 kHz/(1+samp_rate_div)
