@@ -13,6 +13,10 @@ function exec () {
       console.log("CONNECTION: ", id)
     })
 
+    socket.on("phone-sig", (data)=> {
+      console.log("PHONE:", data)
+    })
+
     socket.on("py-mpu", (g, a, m, t,c) => {
       
       io.emit('py-data', g,a,m, t,c)

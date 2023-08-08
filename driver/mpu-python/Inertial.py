@@ -81,8 +81,6 @@ class Accelerometer():
 		z = math.atan2 (math.sqrt( a_x *  a_x + a_y * a_y), a_z) * (180 / math.pi)
 		return x, y, z
 
-
-
 	def reader(self, register):
 		# read accel and gyro values
 		high = bus.read_byte_data(MPU6050_ADDR, register)
@@ -121,8 +119,10 @@ class Magnetometer():
 		m_z = (mag_z/(2.0**15.0))*self.sense_config_val[self.sense_index]
 		return m_x, m_y, m_z
 	
-	# def angles(self):
-
+	def heading(self):
+		m_x, m_y, m_z= self.normalize()
+		heading = math.atan2( m_x, m_y ) * (180/ math.pi) 
+		return m_x, m_y, m_z, heading
 
 	def reader(self, register):
 		# read magnetometer values
@@ -157,7 +157,7 @@ class InertialSensor():
 	def read_angles(self):
 		gyro = self.gyro.read()
 		accel = self.accel.angles()
-		mag = self.mag.normalize()
+		mag = self.mag.heading()
 
 		t = time.time() - self.time_init
 		c = self.cycle

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>phone test</title>
+    <style>
+        html, body {
+            box-sizing: border-box;
+        }
+    </style>
+</head>
+<body>
+    <h1 id="display"></h1>
+</body>
+<script src="/socket.io/socket.io.js"></script>
+<script>
+    const display = document.getElementById("display")
+    const domain = (new URL(window.location.href));
+
+    console.log(domain.host)
+    let iterator = 0
+
+    const socket = io(domain.host);
+    
+    socket.on("connect", () => {
+        socket.emit("ID", "phone-output")
+    })
+
+    socket.on("phone-msg", (msg) => {
+        iterator++
+        display.innerHTML(iterator)
+    })
+
+</script>
+</html>

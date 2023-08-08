@@ -12,6 +12,12 @@
         <p>frequency:   </p>
         <p id="frequency"></p>
     </div>
+
+    <div style="display: flex;">
+        <p>heading:   </p>
+        <p id="heading"></p>
+    </div>
+
     <div id="gyro" style="width:600px;height:250px;"></div>
     <div id="accel" style="width:600px;height:250px;"></div>
     <div id="mag" style="width:600px;height:250px;"></div>
@@ -104,6 +110,7 @@
     const accelPlot = document.getElementById('accel');
     const magPlot = document.getElementById('mag');    
     const frequencyDiv = document.getElementById("frequency")
+    const headingDiv = document.getElementById("heading")
 </script>
 <script>
     let i = 0;
@@ -121,6 +128,7 @@
         console.log(g,a,m,t,c)
 
         frequencyDiv.innerHTML = `${1/(c/t)}`
+        headingDiv.innerHTML = `${m[3]}`
 
         if(packetCount < BUFFER_SIZE) {
             gyroBuffer[0].y[packetCount] = g[0]
