@@ -5,20 +5,7 @@ const express = require("express");
 const app = express();
 const httpServer = createServer(app);
 const io = new Server(httpServer, { /* options */ });
-
-let sampler = 0;
-
 const PORT = 3000;
-
-let turretBoundaries={
-  pitch:  {h:0.25, l:0.129},
-  yaw:    {h:0.25,  l:0.06}
-}
-
-let turretPosition = {
-  pitch:  0.2,
-  yaw:    0.2
-}
 
 function exec () {
   io.on("connection", (socket) => {
@@ -27,20 +14,8 @@ function exec () {
     })
 
     socket.on("py-mpu", (g, a, m) => {
-      // console.log(data)
+
       io.emit('py-data', g,a,m)
-      // let [gx, gy, gz, ax, ay,az,mx,my,mz, h] = data.split(',')
-      // const gyro =    {x: parseFloat(gx), y:parseFloat(gy), z: parseFloat(gz)}
-      // const accel =   {x: parseFloat(ax), y:parseFloat(ay), z: parseFloat(az)}
-      // const mag =     {x: parseFloat(mz), y:parseFloat(my), z: parseFloat(mx)}
-      // h=parseFloat(h);
-
-      // //AX12 CONV RATE 0 / 1023
-
-      // //H -180 / 180
-      // h = Math.trunc(((h+180)/360) * 1023)
-      
-      // io.emit('h-order', h)
     })
 
     socket.on("orientation", (data)=> {
@@ -104,6 +79,7 @@ function exec () {
     console.log(`http://${ip}:${PORT}`)
   });
 }
+
 // exec();
 
 module.exports = exec;
