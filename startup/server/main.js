@@ -16,6 +16,14 @@ function exec () {
     socket.on("phone-sig", (data)=> {
       console.log("PHONE:", data)
     })
+    
+    socket.on("phone-order", (direction) => {
+      if(direction === 'off'){
+        io.emit("piTurnedOff")
+      } else {
+        io.emit("movePi", direction)
+      }
+    })
 
     socket.on("py-mpu", (g, a, m,t,c,o) => {
       

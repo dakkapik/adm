@@ -20,7 +20,7 @@ def connect():
 def initLoop ():
     print("EMITING")
     while sio.handle_sigint:
-        # try:
+        
         data = sensor.comp_filter()
 
         sio.emit('py-mpu', data)

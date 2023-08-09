@@ -17,10 +17,10 @@ socket.on('py-data', (g,a,m,t,c,o) => {
     updateGyroDisplay(gyro);
     // updateAccelDisplay(accel);
     // updateMagDisplay(mag);
-    updateHeading(m[2]);
+
+    updateHeading(m[3]);
 
     if(tics === 0) {
-        // hAxis.h = h;
         gAxis.x = gyro.x;
         gAxis.y = gyro.y;
         gAxis.z = gyro.z;
@@ -33,7 +33,6 @@ socket.on('py-data', (g,a,m,t,c,o) => {
         mAxis.y = mag.y;
         mAxis.z = mag.z;
     } else {
-        // hDelta.h = hAxis.h - h
 
         gDelta.x = gAxis.x + gyro.x;
         gDelta.y = gAxis.y + gyro.y;

@@ -2,9 +2,15 @@ let hAxis = {
     h:0
 }
 
+let hDelta = {
+    h:0
+}
+
 function updateHeading(h) {
-    console.log(h)
-    hAxis.h = h
+    hDelta.h = h - hAxis.h
+    hAxis.h += hDelta.h
+
+
     updateHeadingDisplay(h)
 }
 

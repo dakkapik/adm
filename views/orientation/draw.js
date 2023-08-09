@@ -5,7 +5,6 @@ function setup() {
     rectMode(CENTER);
 }
 
-let displayVal = 0;
 
 function draw() {
     background(255);
@@ -14,10 +13,9 @@ function draw() {
     angleMode(DEGREES)
 
     push()
-    rotateY(displayVal-hAxis.h)
-    displayVal = hAxis.h
-    // rotateX(gDelta.x)
-    // rotateZ(gDelta.z)
+    rotateY(hAxis.h)
+    // rotateX(gDelta.x * 10)
+    // rotateZ(gDelta.z * 2)
     box( 180, 30, 180)
     pop()
 }
