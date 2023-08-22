@@ -26,21 +26,18 @@ function checkRoomJoin(id, socket) {
   if(id === INTEGRATED_DISPLAY){
     socket.join(INTEGRATED_ROOM)
     io.to(EMITTER_ROOM).emit(INTEGRATED_ON)
-    console.log("CONNECTION: ", id)
-    console.log("JOINED: ", INTEGRATED_ROOM)
+    console.log("CONNECTION: ", id, '==>', INTEGRATED_ROOM)
     return 
   }
   if(id === DISCRETE_DISPLAY){
     socket.join(DISCRETE_ROOM)
     io.to(EMITTER_ROOM).emit(DISCRETE_ON)
-    console.log("CONNECTION: ", id)
-    console.log("JOINED: ", DISCRETE_ROOM)
+    console.log("CONNECTION: ", id, '==>',DISCRETE_ROOM)
     return
   }
   if(id === EMITTER_PI){
     socket.join(EMITTER_ROOM)
-    console.log("CONNECTION: ", id)
-    console.log("JOINED: ", EMITTER_ROOM)
+    console.log("CONNECTION: ", id, '==>',EMITTER_ROOM)
     return
   }
   console.log("CONNECTION: ", id)

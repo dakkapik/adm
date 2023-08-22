@@ -189,9 +189,9 @@ class InertialSensor():
 
 		t = self.getTimeEleapsed()
 
-		self.inertial[0] += 0.96* ( (self.roll +  gyro[0]) *  t ) + 0.04*accel[0]
-		self.inertial[1] += 0.96* ( (self.pitch +  gyro[1]) *  t ) + 0.04*accel[1]
-		self.inertial[2] += 0.96* ( (self.yaw +  gyro[2]) *  t ) + 0.04*accel[2]
+		self.inertial[0] += 0.96* ( (self.inertial[0] +  gyro[0]) *  t ) + 0.04*accel[0]
+		self.inertial[1] += 0.96* ( (self.inertial[1] +  gyro[1]) *  t ) + 0.04*accel[1]
+		self.inertial[2] += 0.96* ( (self.inertial[2] +  gyro[2]) *  t ) + 0.04*accel[2]
 
 		t = time.time() - self.time_init
 		c = self.cycle
