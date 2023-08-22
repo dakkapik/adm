@@ -13,7 +13,7 @@ def disconnect():
 @sio.event
 def connect():
     print('connection established')
-    sio.emit("ID", 'python-gyro-client')
+    sio.emit("ID", 'emitter-pi')
 
     initLoop()
 

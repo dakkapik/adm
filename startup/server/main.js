@@ -1,16 +1,45 @@
 const { createServer } = require("http");
 const { Server } = require("socket.io");
 const express = require("express");
+const { all } = require("express/lib/application");
 
 const app = express();
 const httpServer = createServer(app);
 const io = new Server(httpServer, { /* options */ });
 const PORT = 3000;
 
+const DISCRETE_ROOM = 'DISCRETE_ROOM' 
+const INTEGRATED_ROOM = 'INTEGRATED_ROOM' 
+const EMITTER_ROOM = 'EMITTER_ROOM'
+
+function checkRoomJoin(id) {
+  if(id === 'integrated-display'){
+    socket.join(INTEGRATED_ROOM)
+    io.to(EMITTER_ROOM).emit('integration-on')
+    console.log("CONNECTION: ", id)
+    console.log("JOINED: ", INTEGRATED_ROOM)
+    return 
+  }
+  if(id === 'discrete-display'){
+    socket.join(DISCRETE_ROOM)
+    io.to(EMITTER_ROOM).emit('discrete-on')
+    console.log("CONNECTION: ", id)
+    console.log("JOINED: ", DISCRETE_ROOM)
+    return
+  }
+  if(id === 'emitter-pi'){
+    socket.join(EMITTER_ROOM)
+    console.log("CONNECTION: ", id)
+    console.log("JOINED: ", EMITTER_ROOM)
+    return
+  }
+  console.log("CONNECTION: ", id)
+}
+
 function exec () {
   io.on("connection", (socket) => {
-    socket.on("ID", id => {
-      console.log("CONNECTION: ", id)
+    socket.on("ID", (id) => {
+      checkRoomJoin(id)
     })
 
     socket.on("phone-sig", (data)=> {
@@ -25,10 +54,10 @@ function exec () {
       }
     })
 
-    socket.on("py-mpu", (g, a, m,t,c,o) => {
-      
-      io.emit('py-data', g,a,m,t,c,o)
-    })
+    // get inertial setup if listner active
+    socket.on("py-mpu", (g, a, m,t,c,o) => io.emit('py-data', g,a,m,t,c,o))
+    // get python raw data if listener set up
+    // socket.on("py",)
 
     socket.on("orientation", (data)=> {
       

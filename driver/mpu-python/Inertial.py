@@ -148,9 +148,7 @@ class InertialSensor():
 		self.accel = Accelerometer()
 		self.mag = Magnetometer()
 
-		self.roll = 0
-		self.pitch = 0
-		self.yaw = 0
+		self.inertial = { 0,0,0 }
 
 		self.time_init = time.time()
 		self.prev_time = 0
@@ -201,6 +199,7 @@ class InertialSensor():
 
 		return gyro, accel, mag, t, c, [ self.roll, self.pitch, self.yaw ]
 
+	
 
 	def config_MPU(self):
 		samp_rate_div = 0 # sample rate = 8 kHz/(1+samp_rate_div)
