@@ -148,7 +148,7 @@ class InertialSensor():
 		self.accel = Accelerometer()
 		self.mag = Magnetometer()
 
-		self.inertial = { 0,0,0 }
+		self.inertial = [ 0,0,0 ]
 
 		self.time_init = time.time()
 		self.prev_time = 0
