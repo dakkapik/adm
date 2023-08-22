@@ -189,17 +189,15 @@ class InertialSensor():
 
 		t = self.getTimeEleapsed()
 
-		self.roll =  0.96* ( (self.roll +  gyro[0]) *  t ) + 0.04*accel[0]
-		self.pitch =  0.96* ( (self.pitch +  gyro[1]) *  t ) + 0.04*accel[1]
-		self.yaw =  0.96* ( (self.yaw +  gyro[2]) *  t ) + 0.04*accel[2]
+		self.inertial[0] += 0.96* ( (self.roll +  gyro[0]) *  t ) + 0.04*accel[0]
+		self.inertial[1] += 0.96* ( (self.pitch +  gyro[1]) *  t ) + 0.04*accel[1]
+		self.inertial[2] += 0.96* ( (self.yaw +  gyro[2]) *  t ) + 0.04*accel[2]
 
 		t = time.time() - self.time_init
 		c = self.cycle
 		self.cycle = self.cycle + 1
 
-		return gyro, accel, mag, t, c, [ self.roll, self.pitch, self.yaw ]
-
-	
+		return gyro, accel, mag, t, c, self.inertial
 
 	def config_MPU(self):
 		samp_rate_div = 0 # sample rate = 8 kHz/(1+samp_rate_div)

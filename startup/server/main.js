@@ -12,7 +12,7 @@ const DISCRETE_ROOM = 'DISCRETE_ROOM'
 const INTEGRATED_ROOM = 'INTEGRATED_ROOM' 
 const EMITTER_ROOM = 'EMITTER_ROOM'
 
-function checkRoomJoin(id) {
+function checkRoomJoin(id, socket) {
   if(id === 'integrated-display'){
     socket.join(INTEGRATED_ROOM)
     io.to(EMITTER_ROOM).emit('integration-on')
@@ -39,7 +39,7 @@ function checkRoomJoin(id) {
 function exec () {
   io.on("connection", (socket) => {
     socket.on("ID", (id) => {
-      checkRoomJoin(id)
+      checkRoomJoin(id, socket)
     })
 
     socket.on("phone-sig", (data)=> {
