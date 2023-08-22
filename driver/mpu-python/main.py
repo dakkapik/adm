@@ -19,12 +19,12 @@ def disconnect():
     print('disconnected from server')
 
 @sio.event
-def EMIT_DISCRETE( val ):
+def emit_discrete( val ):
     DISCRETE = val
     print('DISCRETE', DISCRETE)
 
 @sio.event
-def EMIT_INTEGRATED( val ):
+def emit_integrated( val ):
     INTEGRATED = val
     print('INTEGRATED', INTEGRATED)
 
