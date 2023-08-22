@@ -21,24 +21,28 @@ const DISPLAY_DISCRETE    =  'DISPLAY_DISCRETE'
 const EMITTER_PI          =  'EMITTER_PI'
 
 function checkRoomJoin(id, socket) {
-  if(id === DISPLAY_INTEGRATED){
-    socket.join(ROOM_INTEGRATED)
-    io.to(ROOM_EMITTER).emit(EMIT_INTEGRATED, true)
-    console.log("CONNECTION: ", id, '==>', ROOM_INTEGRATED)
-    return 
-  }
-  if(id === DISPLAY_DISCRETE){
-    socket.join(ROOM_DISCRETE)
-    io.to(ROOM_EMITTER).emit(EMIT_DISCRETE, true)
-    console.log("CONNECTION: ", id, '==>',ROOM_DISCRETE)
-    return
-  }
-  if(id === EMITTER_PI){
-    socket.join(ROOM_EMITTER)
-    console.log("CONNECTION: ", id, '==>',ROOM_EMITTER)
-    return
-  }
-  console.log("CONNECTION: ", id)
+  switch(id){
+    case DISPLAY_INTEGRATED:
+      socket.join(ROOM_INTEGRATED)
+      io.to(ROOM_EMITTER).emit(EMIT_INTEGRATED, true)
+      console.log("CONNECTION: ", id, '==>', ROOM_INTEGRATED)
+    break;
+    
+    case DISPLAY_DISCRETE:
+      socket.join(ROOM_DISCRETE)
+      io.to(ROOM_EMITTER).emit(EMIT_DISCRETE, true)
+      console.log("CONNECTION: ", id, '==>',ROOM_DISCRETE)
+    break;
+
+    case EMITTER_PI:
+      socket.join(ROOM_EMITTER)
+      console.log("CONNECTION: ", id, '==>',ROOM_EMITTER)
+    break;
+
+    default:
+      console.log("CONNECTION: ", id)
+    break;
+  };
 }
 
 function exec () {

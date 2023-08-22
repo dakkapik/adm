@@ -14,9 +14,6 @@ sensor = InertialSensor()
 
 time.sleep(1) # delay necessary to allow mpu9250 to settle
 
-@sio.event
-def disconnect():
-    print('disconnected from server')
 
 @sio.event
 def emit_discrete( val, val2 ):
@@ -37,6 +34,9 @@ def connect():
     initLoop()
 
 @sio.event
+def disconnect():
+    print('disconnected from server')
+
 
 def initLoop ():
     print("EMITING")
