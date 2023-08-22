@@ -119,7 +119,7 @@
     const socket = io(domain.host);
 
     // THIS MUST COME FROM A CENTRAL SETTING POINT
-    const DISCRETE_DISPLAY = 'DISCRETE_DISPLAY'
+    const DISPLAY_DISCRETE    =  'DISPLAY_DISCRETE'
 
     socket.on("connect", () => {
         socket.emit("ID", DISCRETE_DISPLAY)

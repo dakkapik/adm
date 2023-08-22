@@ -5,7 +5,7 @@ let startTime = Date.now();
 
 
 // THIS MUST COME FROM A CENTRAL SETTING POINT
-const INTEGRATED_DISPLAY = 'INTEGRATED_DISPLAY'
+const DISPLAY_INTEGRATED  =  'DISPLAY_INTEGRATED'
 
 socket.on("connect", () => {
     socket.emit("ID", INTEGRATED_DISPLAY);

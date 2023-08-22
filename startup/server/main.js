@@ -9,35 +9,33 @@ const httpServer = createServer(app);
 const io = new Server(httpServer, { /* options */ });
 const PORT = 3000;
 
-const DISCRETE_ROOM   ='DISCRETE_ROOM' 
-const INTEGRATED_ROOM ='INTEGRATED_ROOM' 
-const EMITTER_ROOM    ='EMITTER_ROOM'
+const ROOM_DISCRETE   ='ROOM_DISCRETE' 
+const ROOM_INTEGRATED ='ROOM_INTEGRATED' 
+const ROOM_EMITTER    ='ROOM_EMITTER'
 
-const DISCRETE_ON     ='DISCRETE_ON'
-const DISCRETE_OFF    ='DISCRETE_OFF'
-const INTEGRATED_ON   ='INTEGRATED_ON'
-const INTEGRATED_OFF  ='INTEGRATED_OFF'
+const EMIT_DISCRETE   = 'EMIT_DISCRETE' 
+const EMIT_INTEGRATED = 'EMIT_INTEGRATED'
 
-const INTEGRATED_DISPLAY = 'INTEGRATED_DISPLAY'
-const DISCRETE_DISPLAY = 'DISCRETE_DISPLAY'
-const EMITTER_PI = 'EMITTER_PI'
+const DISPLAY_INTEGRATED  =  'DISPLAY_INTEGRATED'
+const DISPLAY_DISCRETE    =  'DISPLAY_DISCRETE'
+const EMITTER_PI          =  'EMITTER_PI'
 
 function checkRoomJoin(id, socket) {
-  if(id === INTEGRATED_DISPLAY){
-    socket.join(INTEGRATED_ROOM)
-    io.to(EMITTER_ROOM).emit(INTEGRATED_ON)
-    console.log("CONNECTION: ", id, '==>', INTEGRATED_ROOM)
+  if(id === DISPLAY_INTEGRATED){
+    socket.join(ROOM_INTEGRATED)
+    io.to(ROOM_EMITTER).emit(EMIT_INTEGRATED, true)
+    console.log("CONNECTION: ", id, '==>', ROOM_INTEGRATED)
     return 
   }
-  if(id === DISCRETE_DISPLAY){
-    socket.join(DISCRETE_ROOM)
-    io.to(EMITTER_ROOM).emit(DISCRETE_ON)
-    console.log("CONNECTION: ", id, '==>',DISCRETE_ROOM)
+  if(id === DISPLAY_DISCRETE){
+    socket.join(ROOM_DISCRETE)
+    io.to(ROOM_EMITTER).emit(EMIT_DISCRETE, true)
+    console.log("CONNECTION: ", id, '==>',ROOM_DISCRETE)
     return
   }
   if(id === EMITTER_PI){
-    socket.join(EMITTER_ROOM)
-    console.log("CONNECTION: ", id, '==>',EMITTER_ROOM)
+    socket.join(ROOM_EMITTER)
+    console.log("CONNECTION: ", id, '==>',ROOM_EMITTER)
     return
   }
   console.log("CONNECTION: ", id)
@@ -123,11 +121,11 @@ function exec () {
 
     socket.on("disconnect", async (reason, desc) => {
       // const emiRo = await io.in(EMITTER_ROOM).fetchSockets()
-      const disRo = await io.in(DISCRETE_ROOM).fetchSockets()
-      const intRo = await io.in(INTEGRATED_ROOM).fetchSockets()
+      const disRo = await io.in(ROOM_DISCRETE).fetchSockets()
+      const intRo = await io.in(ROOM_INTEGRATED).fetchSockets()
 
-      if(disRo.length ===0) io.to(EMITTER_ROOM).emit(DISCRETE_OFF)
-      if(intRo.length ===0) io.to(EMITTER_ROOM).emit(INTEGRATED_OFF)
+      if(disRo.length ===0) io.to(ROOM_EMITTER).emit(EMIT_DISCRETE, false)
+      if(intRo.length ===0) io.to(ROOM_EMITTER).emit(EMIT_INTEGRATED, false)
 
       console.log("DISCONNECT: ", reason)
     })

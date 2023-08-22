@@ -3,6 +3,12 @@ from Inertial import InertialSensor
 
 EMITTER_PI = 'EMITTER_PI'
 
+EMIT_DISCRETE   = 'EMIT_DISCRETE' 
+EMIT_INTEGRATED = 'EMIT_INTEGRATED'
+
+DISCRETE = False
+INTEGRATED = False
+
 sio = socketio.Client()
 sensor = InertialSensor()
 
@@ -13,11 +19,23 @@ def disconnect():
     print('disconnected from server')
 
 @sio.event
+def EMIT_DISCRETE( val ):
+    DISCRETE = val
+    print('DISCRETE', DISCRETE)
+
+@sio.event
+def EMIT_INTEGRATED( val ):
+    INTEGRATED = val
+    print('INTEGRATED', INTEGRATED)
+
+@sio.event
 def connect():
     print('connection established')
     sio.emit("ID", EMITTER_PI)
 
     initLoop()
+
+@sio.event
 
 def initLoop ():
     print("EMITING")
