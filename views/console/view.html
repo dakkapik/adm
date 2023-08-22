@@ -117,9 +117,12 @@
     const domain = (new URL(window.location.href));
     
     const socket = io(domain.host);
-    
+
+    // THIS MUST COME FROM A CENTRAL SETTING POINT
+    const DISCRETE_DISPLAY = 'DISCRETE_DISPLAY'
+
     socket.on("connect", () => {
-        socket.emit("ID", "console")
+        socket.emit("ID", DISCRETE_DISPLAY)
     })
 
     let packetCount = 0;

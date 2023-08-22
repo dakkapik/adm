@@ -3,8 +3,12 @@ const socket = io(domain.host);
 let tics = 0;
 let startTime = Date.now();
 
+
+// THIS MUST COME FROM A CENTRAL SETTING POINT
+const INTEGRATED_DISPLAY = 'INTEGRATED_DISPLAY'
+
 socket.on("connect", () => {
-    socket.emit("ID", "gyro-display");
+    socket.emit("ID", INTEGRATED_DISPLAY);
     console.log("CONNECTION");
 })
 
