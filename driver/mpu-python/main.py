@@ -19,8 +19,9 @@ def disconnect():
     print('disconnected from server')
 
 @sio.event
-def emit_discrete( val ):
-    DISCRETE = val
+def emit_discrete( val, val2 ):
+
+    DISCRETE = val2
     print('DISCRETE', DISCRETE)
 
 @sio.event
