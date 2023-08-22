@@ -62,7 +62,10 @@ function exec () {
     })
 
     // get inertial setup if listner active
-    socket.on("py-mpu", (g, a, m,t,c,o) => io.emit('py-data', g,a,m,t,c,o))
+    socket.on("py-mpu", (g, a, m,t,c,o) => {
+      
+      io.emit('py-data', g,a,m,t,c,o)
+    })
     // get python raw data if listener set up
     // socket.on("py",)
 
