@@ -25,7 +25,7 @@ def initLoop ():
         
         gyro, accel, mag, time, cycle, inertial = sensor.comp_filter()
 
-        sio.emit('py-mpu', gyro, accel, mag, time, cycle, inertial)
+        sio.emit('py-mpu', [gyro, accel, mag, time, cycle, inertial])
 
 sio.connect('http://192.168.2.13:3000')
 sio.wait()
