@@ -14,10 +14,11 @@ sensor = InertialSensor()
 
 time.sleep(1) # delay necessary to allow mpu9250 to settle
 
-
 @sio.event
 def emit_discrete( val ):
     DISCRETE = val
+
+# make global variable to activate stuff
 
 @sio.event
 def emit_integrated( val ):
