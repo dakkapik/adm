@@ -18,12 +18,10 @@ time.sleep(1) # delay necessary to allow mpu9250 to settle
 @sio.event
 def emit_discrete( val ):
     DISCRETE = val
-    print('DISCRETE', DISCRETE)
 
 @sio.event
 def emit_integrated( val ):
     INTEGRATED = val
-    print('INTEGRATED', INTEGRATED)
 
 @sio.event
 def connect():
@@ -49,7 +47,13 @@ def initLoop ():
 
         gyro, accel, mag, time, cycle, inertial = data
 
-        sio.emit('py-mpu', data)
+        if(INTEGRATED):
+            sio.emit('pi-inertial',inertial )
+
+        if(DISCRETE):
+            sio.emit('pi-discrete', data )
+
+        
 
 sio.connect('http://192.168.2.13:3000')
 sio.wait()

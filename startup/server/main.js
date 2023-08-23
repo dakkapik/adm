@@ -1,8 +1,6 @@
 const { createServer } = require("http");
 const { Server } = require("socket.io");
 const express = require("express");
-const { all } = require("express/lib/application");
-const { emit } = require("process");
 
 const app = express();
 const httpServer = createServer(app);
@@ -21,22 +19,23 @@ const DISPLAY_DISCRETE    =  'DISPLAY_DISCRETE'
 const EMITTER_PI          =  'EMITTER_PI'
 
 function checkRoomJoin(id, socket) {
+  console.log(id)
   switch(id){
     case DISPLAY_INTEGRATED:
+      console.log("CONNECTION: ", id, '==>', ROOM_INTEGRATED)
       socket.join(ROOM_INTEGRATED)
       io.to(ROOM_EMITTER).emit(EMIT_INTEGRATED, true)
-      console.log("CONNECTION: ", id, '==>', ROOM_INTEGRATED)
     break;
-    
+
     case DISPLAY_DISCRETE:
+      console.log("CONNECTION: ", id, '==>',ROOM_DISCRETE)
       socket.join(ROOM_DISCRETE)
       io.to(ROOM_EMITTER).emit(EMIT_DISCRETE, true)
-      console.log("CONNECTION: ", id, '==>',ROOM_DISCRETE)
     break;
 
     case EMITTER_PI:
-      socket.join(ROOM_EMITTER)
       console.log("CONNECTION: ", id, '==>',ROOM_EMITTER)
+      socket.join(ROOM_EMITTER)
     break;
 
     default:

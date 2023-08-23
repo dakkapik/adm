@@ -122,13 +122,14 @@
     const DISPLAY_DISCRETE    =  'DISPLAY_DISCRETE'
 
     socket.on("connect", () => {
-        socket.emit("ID", DISCRETE_DISPLAY)
+
+        socket.emit("ID", DISPLAY_DISCRETE)
     })
 
     let packetCount = 0;
 
     socket.on("py-data", (g,a,m,t,c,o) => {
-        console.log(g,m,o)
+        // console.log(g,m,o)
 
         frequencyDiv.innerHTML = `${1/(c/t)}`
         headingDiv.innerHTML = `${m[3]}`

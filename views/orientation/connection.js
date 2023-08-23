@@ -8,8 +8,7 @@ let startTime = Date.now();
 const DISPLAY_INTEGRATED  =  'DISPLAY_INTEGRATED'
 
 socket.on("connect", () => {
-    socket.emit("ID", INTEGRATED_DISPLAY);
-    console.log("CONNECTION");
+    socket.emit("ID", DISPLAY_INTEGRATED);
 })
 
 socket.on('py-data', (g,a,m,t,c,o) => {
