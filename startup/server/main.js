@@ -62,8 +62,6 @@ function exec () {
       }
     })
 
-    let test = 0
-
     socket.on('pi-discrete', (g, a, m,t,c,o) => {
       io.emit('py-data', g,a,m,t,c,o)
     })
