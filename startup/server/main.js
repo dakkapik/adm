@@ -62,6 +62,11 @@ function exec () {
       }
     })
 
+    socket.on('pi-inertial', (g, a, m,t,c,o) => {
+      console.log(g)
+      io.emit('py-data', g,a,m,t,c,o)
+    })
+
     // get inertial setup if listner active
     socket.on("py-mpu", (g, a, m,t,c,o) => {
       

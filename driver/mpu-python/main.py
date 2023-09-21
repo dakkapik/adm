@@ -50,9 +50,9 @@ def initLoop ():
 
         gyro, accel, mag, time, cycle, inertial = data
 
-        if(INTEGRATED):
-            print("INT")
-            sio.emit('pi-inertial',inertial )
+        # if(INTEGRATED):
+        print("INT")
+        sio.emit('pi-inertial',inertial )
 
         if(DISCRETE):
             print("DIS")
