@@ -14,6 +14,8 @@ sensor = InertialSensor()
 
 time.sleep(1) # delay necessary to allow mpu9250 to settle
 
+print("INITIALIZING SERVER...")
+
 @sio.event
 def emit_discrete( val ):
     DISCRETE = val
