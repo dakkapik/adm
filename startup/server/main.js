@@ -63,7 +63,7 @@ function exec () {
     })
 
     socket.on('pi-inertial', (g, a, m,t,c,o) => {
-      console.log(g)
+      // console.log(g)
       io.emit('py-data', g,a,m,t,c,o)
     })
 
