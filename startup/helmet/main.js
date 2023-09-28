@@ -12,7 +12,6 @@ const ipAddresses = [
     "http://192.168.2.11:3000",
     'http://192.168.2.12:3000',
     "http://192.168.2.16:3000",
-
     "http://192.168.0.14:3000",
     "http://192.168.0.100:3000",
     "http://192.168.0.109:3000"
@@ -82,7 +81,7 @@ async function exec () {
 
     console.log('\x1b[32m%s\x1b[0m', "running exec...");
 
-    const child = spawn('./exec', [] ,{
+    const child = spawn('python programname.py', [] ,{
         stdio: ['ignore', 'pipe', process.stderr],
         cwd: driverDir
     });
@@ -92,4 +91,6 @@ async function exec () {
     });
 }   
 
-module.exports = helmet;
+helmet()
+exec()
+
