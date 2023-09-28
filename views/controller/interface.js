@@ -1,31 +1,36 @@
 let WIDTH =1000
 let HEIGHT = 800
 
-let x = 0;
-let y = 0;
+angle = 0
+speed = 0
 
-let pitch = 0;
-let roll = 0;
-// console.log(controllers[0].axes)
+let dispAng 
+let dispSpe
+
+let multiAng = 1
+let multiSpeed = 200
+
+let sendValues = {}
 
 function setup() {
-    
-    createCanvas(WIDTH, HEIGHT, WEBGL);
-    // x = WIDTH *0.5
-    // y = HEIGHT *0.5
-    angleMode(DEGREES)
-
+    dispAng = document.getElementById("angle")
+    dispSpe = document.getElementById("speed")
+    createCanvas(WIDTH, HEIGHT);
+    stroke(51);
+    strokeWeight(5);
 }
   
 function draw() {
     background(220);
-    normalMaterial();
-    translate(x,y,0);
-    rotateX(pitch)
-    rotateY(roll)
-
+    
     push()
-        rect(0,0,50,50,15);
+        translate(WIDTH/2, HEIGHT/2)
+        let x = (Math.cos(angle)*speed)*multiSpeed
+        let y = -(Math.sin(angle)*speed)*multiSpeed
+
+        line(0,0,x,y)
+        circle(x,y, 10)
+
         if(controllers[0]){
             update();
         }
@@ -34,16 +39,25 @@ function draw() {
   
 
 function update () {
-    let multi = 5
-    let dx =  (controllers[0].axes[0]) * multi
-    let dy =  (controllers[0].axes[1]) * multi
+    let xAxis = controllers[0].axes[0]
+    let yAxis = -controllers[0].axes[1]
+    
+    angle = Math.atan2(yAxis,xAxis)
+    speed = Math.hypot(xAxis,yAxis)
+    
 
-    let dPitch =  (controllers[0].axes[2])
-    let dRoll =  (controllers[0].axes[3]) 
+    if (speed > 1){
+        speed = 1 
+    }
+    if (speed < -1){
+        speed = -1 
+    }
 
-    pitch += dPitch;
-    roll += dRoll;
-    x += dx
-    y += dy
-    // console.log(x, y)
+    sendValues.speed = speed      
+    dispSpe.innerText = speed
+
+    sendValues.angle = angle*(180/Math.PI)
+    dispAng.innerText = angle*(180/Math.PI)
+
+    socket.emit('drive-control', sendValues)
 }

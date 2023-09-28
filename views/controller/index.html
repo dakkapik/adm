@@ -54,15 +54,30 @@ You should have received a copy of the CC0 Public Domain Dedication along with t
   font-size: 0.8em;
   opacity: 0.7;
 }
+.display{
+  position: absolute;
+  top: 30px;
+  left: 30px;
+}
 </style>
-<script src="/socket.io/socket.io.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.6.0/p5.js"></script>
+<script src="https://cdn.socket.io/4.6.0/socket.io.min.js" integrity="sha384-c79GN5VsunZvi+Q/WObgk2in0CbZsHnjEqvFxC5DxHn9lTfNce2WW6h2pH6u/kF+" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.6.0/p5.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.6.0/addons/p5.sound.min.js"></script>
+<script src="socket.js"></script>
 <script src="interface.js"></script>
 </head>
 <body>
 <h2 id="start">Press a button on your controller to start</h2>
 <main>
 </main>
+<div class="display">
+  <div>
+    <h1>angle:</h1>
+    <h1 id="angle"></h1>
+  </div>
+  <div>
+    <h1>speed:</h1>
+    <h1 id="speed"></h1>
+  </div>
+</div>
 </body>
 </html>
